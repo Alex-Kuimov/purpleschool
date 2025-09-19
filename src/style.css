@@ -1,11 +1,11 @@
 :root {
     --color-blue: #008BFE;
     --color-white: #ffffff;
-    --font-roboto: font-family: "Roboto", sans-serif;
+    --font: "Roboto", sans-serif;
 }
 
 body {
-    font-family: var(--font-roboto);
+    font-family: var(--font);
 }
 
 main {

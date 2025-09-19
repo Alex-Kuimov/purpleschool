@@ -9,6 +9,7 @@
 
 <style scoped>
 .button {
+    font-family: var(--font);
     background: var(--color-blue);
     color: var(--color-white);
     border: none;
