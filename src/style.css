@@ -1,11 +1,28 @@
 :root {
     --color-blue: #008BFE;
+    --color-blue-light: #CCE8FF;
     --color-white: #ffffff;
     --font: "Roboto", sans-serif;
 }
 
 body {
     font-family: var(--font);
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    width: calc(100% - 40px);
+    min-height: 100vh;
+    margin: 0 auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
 }
 
 main {
@@ -13,5 +30,10 @@ main {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 100vh;
+    height: 100%;
+}
+
+h1 {
+    font-size: 16px;
+    font-weight: 700;
 }
