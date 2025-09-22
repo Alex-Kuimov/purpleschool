@@ -1,6 +1,8 @@
 <script setup>
 import { defineEmits } from 'vue'
 
+const props = defineProps(['word', 'translation', 'state', 'status']);
+
 const emit = defineEmits(['flip', 'statusChange'])
 
 function handleFlip() {
@@ -19,7 +21,7 @@ function changeStatus() {
             <span>01</span>
         </div>
         <div class="card-content">
-            <span>Some word</span>
+            <span>{{ props.word }}</span>
         </div>
         <div class="card-footer">
             <span @click.stop="changeStatus">Перевернуть</span>

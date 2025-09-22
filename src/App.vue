@@ -1,30 +1,39 @@
 <script setup>
+import { ref } from 'vue';
 import Header from './components/Header.vue';
 import Score from './components/Score.vue';
 import Button from './components/Button.vue';
 import Card from './components/Card.vue';
 
+const scoreCnt = ref(100);
+
+const card = ref({
+    word: "some word",
+    translation: "Какое-то слово",
+    state: "closed",
+    status: "pending",
+});
 
 const onFlip = () => {
-    console.log('Карта перевернулась')
+    card.value.state = "opened";
+    console.log('Карта перевернулась');
 }
 
 const onStatusChange = () => {
-    console.log('Статус изменен')
+    card.value.status = "success";
+    console.log('Статус изменен');
 }
-
 </script>
 
 <template>
     <Header>
         <h1>ЗАПОМНИ СЛОВО</h1>
-        <Score cnt="100"></Score>
+        <Score :cnt="scoreCnt"></Score>
     </Header>
 
     <main>
         <Button>Начать игру</Button>
-
-        <Card @flip="onFlip" @statusChange="onStatusChange"></Card>
+        <Card v-bind="card" @flip="onFlip" @statusChange="onStatusChange"></Card>
     </main>
 
 </template>
