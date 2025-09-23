@@ -1,7 +1,9 @@
 <script setup>
-import { defineEmits } from 'vue'
+import { defineEmits } from 'vue';
+import SuccessIcon from '../components/icons/SuccessIcon.vue';
+import FailIcon from '../components/icons/FailIcon.vue';
 
-const props = defineProps(['word', 'translation', 'state', 'status']);
+const props = defineProps(['id', 'word', 'translation', 'state', 'status']);
 
 const emit = defineEmits(['flip', 'statusChange'])
 
@@ -16,15 +18,28 @@ function changeStatus() {
 </script>
 
 <template>
-    <div class="card" @click="handleFlip">
+    <div class="card">
         <div class="card-header">
-            <span>01</span>
+            <span>{{ props.id }}</span>
+            <SuccessIcon v-if="props.status === 'success'" />
+            <FailIcon v-if="props.status === 'fail'" />
         </div>
-        <div class="card-content">
+        <div class=" card-content">
             <span>{{ props.word }}</span>
         </div>
         <div class="card-footer">
-            <span @click.stop="changeStatus">Перевернуть</span>
+            <span v-if="props.state === 'closed' && props.status === 'pending'" @click="handleFlip">
+                Перевернуть
+            </span>
+
+            <span v-if="props.state === 'opened' && props.status === 'pending'">
+                <SuccessIcon @click="changeStatus" />
+                <FailIcon @click="changeStatus" />
+            </span>
+
+            <span v-if="props.status === 'success' || props.status === 'fail'">
+                Завершено
+            </span>
         </div>
     </div>
 </template>
