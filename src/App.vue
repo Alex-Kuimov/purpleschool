@@ -1,52 +1,55 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Header from './components/Header.vue';
 import Score from './components/Score.vue';
 import Button from './components/Button.vue';
 import Card from './components/Card.vue';
 
 const scoreCnt = ref(100);
+const cards = ref([]);
+const loading = ref(false);
+const error = ref(null);
 
-const cards = ref([
-    {
-        id: 1,
-        word: "A table",
-        translation: "Стол",
-        state: "closed",
-        status: "pending",
-    },
-    {
-        id: 2,
-        word: "A cat",
-        translation: "Кошка",
-        state: "opened",
-        status: "pending",
-    },
-    {
-        id: 3,
-        word: "A car",
-        translation: "Машина",
-        state: "opened",
-        status: "success",
-    },
-    {
-        id: 4,
-        word: "A pen",
-        translation: "Ручка",
-        state: "opened",
-        status: "fail",
+const fetchCards = async () => {
+    loading.value = true;
+    error.value = null;
+
+    try {
+        const response = await fetch('http://localhost:8080/api/random-words');
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        cards.value = data.map((item, index) => ({
+            id: index + 1,
+            word: item.word,
+            translation: item.translation,
+            state: "closed",
+            status: "pending",
+        }));
+
+    } catch (err) {
+        error.value = err.message;
+        console.error('Failed to fetch cards:', err);
+    } finally {
+        loading.value = false;
     }
-]);
+};
 
 const onFlip = () => {
-    //card.value.state = "opened";
     console.log('Карта перевернулась');
 }
 
 const onStatusChange = () => {
-    //card.value.status = "success";
     console.log('Статус изменен');
 }
+
+onMounted(() => {
+    fetchCards();
+});
 </script>
 
 <template>
@@ -59,7 +62,6 @@ const onStatusChange = () => {
         <Button>Начать игру</Button>
         <Card v-for="card in cards" :key="card.id" v-bind="card" @flip="onFlip" @statusChange="onStatusChange"></Card>
     </main>
-
 </template>
 
 <style scoped></style>
