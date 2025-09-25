@@ -3,16 +3,16 @@ import { defineEmits } from 'vue';
 import SuccessIcon from '../components/icons/SuccessIcon.vue';
 import FailIcon from '../components/icons/FailIcon.vue';
 
-const props = defineProps(['id', 'word', 'translation', 'state', 'status']);
+const card = defineProps(['id', 'word', 'translation', 'state', 'status']);
 
 const emit = defineEmits(['flip', 'statusChange'])
 
 function handleFlip() {
-    emit('flip', true);
+    emit('flip', card);
 }
 
-function changeStatus() {
-    emit('statusChange', true)
+function changeStatus(status) {
+    emit('statusChange', card, status)
 }
 
 </script>
@@ -20,24 +20,24 @@ function changeStatus() {
 <template>
     <div class="card">
         <div class="card-header">
-            <span>{{ props.id }}</span>
-            <SuccessIcon v-if="props.status === 'success'" />
-            <FailIcon v-if="props.status === 'fail'" />
+            <span>{{ card.id }}</span>
+            <SuccessIcon v-if="card.status === 'success'" />
+            <FailIcon v-if="card.status === 'fail'" />
         </div>
         <div class=" card-content">
-            <span>{{ props.word }}</span>
+            <span>{{ card.word }}</span>
         </div>
         <div class="card-footer">
-            <span v-if="props.state === 'closed' && props.status === 'pending'" @click="handleFlip">
+            <span v-if="card.state === 'closed' && card.status === 'pending'" @click="handleFlip">
                 Перевернуть
             </span>
 
-            <span v-if="props.state === 'opened' && props.status === 'pending'">
-                <SuccessIcon @click="changeStatus" />
-                <FailIcon @click="changeStatus" />
+            <span v-if="card.state === 'opened' && card.status === 'pending'">
+                <SuccessIcon @click="changeStatus('success')" />
+                <FailIcon @click="changeStatus('fail')" />
             </span>
 
-            <span v-if="props.status === 'success' || props.status === 'fail'">
+            <span v-if="card.status === 'success' || card.status === 'fail'">
                 Завершено
             </span>
         </div>
